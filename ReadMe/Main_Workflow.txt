@@ -1,0 +1,66 @@
+
+main.c
+1. Parses Input Arguments
+2. Converts number to written format by using dictionary
+3. Print the written number or ERROR
+
+1. Parses Input Arguments
+- Two input arguments: one to determine number to convert and one for dictionary path name.
+- Check the validity of these input arguments 
+  - Check if the input arguments only contain digits
+  - return 0 if true
+  - return -1 if false
+
+
+2. Convert number to written format by using dictionary
+- convert number string to word by using dictionery file
+  - Parse dictionery file
+- return result string (dynamically allocated)
+  - Calculate result string size
+  - Memory allocate
+  - Store converted number
+		- Have to handle number < 100 or >= 100
+		- for < 100,
+			- handle num <= 20 (unique word)
+				- Add the word for this number (like "five" or "thirty") to our result string
+				- return how long the word for this number is, plus a space
+			- handle num <= 100 
+				- make copy to make changes
+				- take only tens part (42 become 40)
+				- find how long the tens word is ("forty")
+				- then add the length of ones word ("two")
+		- for > 100
+			- get leading digits (1 in 1,234 and 12 in 12,345)
+				- count how mnay digits are in the number
+				- if the digits are 4 or more (eg. thousands or millions)
+					- decide how many leading digits we need (e.g: 1 in 1,234 and 12 in 12,345)
+					- make space for these leading digits on memory
+					- get copy of that leading digits
+				- if the digits are 3 or less (eg. 123 or 42 or 3)
+					- we only need first digits
+					- make copy of first digits
+				- put '\0' at the end of the string
+				- return that number
+			- print number before magnitude
+			- get magnitude ladel 
+				- give relative string value according to key from dictionary arrays
+					- to get key:
+						- count how mnay digits are in the number
+						- start counting with total number of digits (n)
+						- if the number has 4 or more degit (eg. thousands or millions)
+							- adjust n to line up with big number groups (by reducing n until it match the magnitude boundary)
+							- make space in memory (1000, for our "1" followed by zeros)
+							- put '1' at the zero index of string
+							- put '\0' at the end
+							- fill the rest with zero (if n is 4, it become '1', '0', '0', '0', '\0')
+							- return the string (key)
+					- to get value;
+						- loop the list of numbers and their words form (1 for one, 100 for hundred)
+						- if we found the number (key) we are looking for, return the values that match it
+				- if no key or didn't find, set error flag and return empty string
+					- need to create empty text string to retrun (to avoid potential problems)
+					- need to make sure the string is really empty before returning
+			- append magnitude to result
+			- print the rest by recursive
+
+

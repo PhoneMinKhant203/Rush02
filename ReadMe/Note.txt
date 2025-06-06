@@ -1,0 +1,20 @@
+char *a VS const char *a
+
+char pointer: pointer to modifiable character (pointer and pointed charcter can change)
+const char pointer: pointer can change, pointed charcter can't change
+
+=========================
+
+What is extern int ?
+
+extern int is keyword to make global variable which is already defined somewhere in projet.
+So it can be shared across multiple source files
+when we use extern int:
+	- It tells compiler this is int variable
+	- don't allocate memory for this in current file
+	- Assume a is already defined somewhere (i.e: we allocated memory for it in anothe file)
+The reason to use is to use same global varible across many files.
+
+=========================
+
+
