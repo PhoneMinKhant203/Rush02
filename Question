@@ -1,0 +1,49 @@
+Files to turn in: Makefile and all the necessary files
+Allowed functions: write, malloc, free, open, read, close
+
+Create a program that takes a number as an argument and converts it to its written
+letter value.
+• Executable name: rush-02
+• Your source code will be compiled as follows:
+make fclean
+make
+• Your program can take up to 2 arguments:
+◦ If there is only one argument, it is the number that you need to convert.
+◦ If there are two arguments, the first argument is the new reference dictionary
+and the second argument is the number that you need to convert.
+• If the argument representing the number is not a valid and positive integer, your
+program must output "Error" followed by a newline.
+Your program should handle numbers beyond the range of unsigned int.
+
+Your program must parse the dictionary given as a resource to the project. The
+values inside it must be used to print the result. These values can be modified.
+• Any memory allocated on the heap (with malloc(3)) must be freed correctly. This
+will be verified during the evaluation.
+• The dictionary will have the following rules:
+[a number][0 to n spaces]:[0 to n spaces][any printable characters]\n
+
+You will trim the spaces before and after the values in the dictionary.
+◦ The dictionary will always have at least the keys contained in the reference
+dictionary. Their values can be modified, more entries can be added, but the
+initial keys can’t be removed.
+◦ The entries of the dictionary can be stored in any order.
+◦ There can be empty lines in the dictionary.
+◦ If you have any errors from the dictionary parsing, your program must output
+"Dict Error\n".
+◦ If the dictionary does not allow you to perform the conversion of the provided
+number, your program must output "Dict Error\n".
+
+Example:
+$> ./rush-02 42 | cat -e
+forty two$
+$> ./rush-02 0 | cat -e
+zero$
+$> ./rush-02 10.4 | cat -e
+Error$
+$> ./rush-02 100000 | cat -e
+one hundred thousand$
+$> grep "20" numbers.dict | cat -e
+20 : hey everybody ! $
+$> ./rush-02 20 | cat -e
+hey everybody !$
+
