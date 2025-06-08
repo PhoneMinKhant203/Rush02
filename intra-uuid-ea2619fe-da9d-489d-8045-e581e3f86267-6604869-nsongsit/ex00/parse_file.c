@@ -6,7 +6,7 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 15:59:19 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 07:35:22 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:45:16 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ int	ft_get_lines_number(const char *pathname)
 
 	file = open(pathname, O_RDONLY);
 	if (file == -1)
+	{
+		close (file);
 		return (-1);
+	}
 	c = 0;
 	i = 0;
 	line_idx = 0;
@@ -47,42 +50,70 @@ int	*ft_get_lines_len(const char *pathname)
 {
 	int	file;
 	int	*file_size;
+	int	num_lines;
 
-	file_size = malloc(sizeof(int) * (ft_get_lines_number(pathname) + 1));
+	num_lines = ft_get_lines_number(pathname);
+	if (num_lines == -1)
+		return (NULL);
+	file_size = malloc(sizeof(int) * (num_lines + 1));
 	if (file_size == NULL)
 		return (NULL);
-	file_size[0] = ft_get_lines_number(pathname);
+	file_size[0] = num_lines;
 	file = open(pathname, O_RDONLY);
-	if (file == -1 || file_size[0] == -1)
+	if (file == -1)
+	{
+		free(file_size);
+		close(file);
 		return (NULL);
+	}
 	if (ft_get_lines_len_loop(file, file_size) == NULL)
+	{
+		close(file);
+		free(file_size);
 		return (NULL);
+	}
 	close(file);
 	return (file_size);
 }
 
 //to read all lines from the file into a dynamically allocated array of strings
 
-int	ft_get_lines(const	char	*pathname, char ***lines)
+int	ft_get_lines(const char	*pathname, char ***lines)
 {
 	int			file;
 	int			*file_size;
 	const char	*dft_path;
 
+	file_size = NULL;
 	dft_path = "numbers.dict";
 	if (pathname == NULL)
 		pathname = dft_path;
 	file_size = ft_get_lines_len(pathname);
-	file = open(pathname, O_RDONLY);
-	if (file_size == NULL || file == -1)
+	if (file_size == NULL)
 		return (-1);
+	file = open(pathname, O_RDONLY);
+	if (file == -1)
+	{
+		close (file);
+		free (file_size);
+		return (-1);
+	}
 	*lines = malloc(sizeof(char *) * (file_size[0] + 1));
 	if (*lines == NULL)
-		return (-1);
-	if (ft_get_lines_loop(file, file_size, lines) == -1)
-		return (-1);
-	if (file_size != NULL)
+	{
 		free (file_size);
-	close(file);
+		close (file);
+		return (-1);
+	}
+	if (ft_get_lines_loop(file, file_size, lines) == -1)
+	{
+		free(*lines);
+		*lines = NULL;
+		free(file_size);
+		close (file);
+		return (-1);
+	}
+	free(file_size);
+	close (file);
 	return (0);
 }

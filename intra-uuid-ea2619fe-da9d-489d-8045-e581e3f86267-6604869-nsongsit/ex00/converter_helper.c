@@ -6,19 +6,16 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 02:57:12 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 07:59:12 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 14:32:11 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "app.h"
 
-extern t_app_data	g_app_data;
-
 char	*ft_get_value(char *key, char **numbers, char **values,
-	t_app_data *data)
+			t_app_data *data)
 {
-	int		index;
-	char	*emp_str;
+	int	index;
 
 	index = 0;
 	while (numbers[index])
@@ -28,14 +25,7 @@ char	*ft_get_value(char *key, char **numbers, char **values,
 		index++;
 	}
 	data->is_error = 1;
-	emp_str = malloc(sizeof(char) * 1);
-	if (emp_str == NULL)
-	{
-		data->is_error = 2;
-		return (NULL);
-	}
-	emp_str[0] = 0;
-	return (emp_str);
+	return (NULL);
 }
 
 char	*ft_get_mag(char *str)

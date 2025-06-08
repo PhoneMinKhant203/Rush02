@@ -6,7 +6,7 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:17:30 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 07:34:45 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:25:27 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,21 +22,33 @@ int	*ft_get_lines_len_loop(int file, int *file_sizes)
 	char	c;
 	int		i;
 	int		line_idx;
+	int		total_lines;
 
+	if (file_sizes == NULL || file_sizes[0] < 0)
+		return (NULL);
+	total_lines = file_sizes[0];
 	c = 0;
 	i = 0;
-	line_idx = -1;
-	while (read(file, &c, 1))
+	line_idx = 0;
+	while (read(file, &c, 1) > 0)
 	{
 		if (c == '\n')
 		{
-			if (i >= 0 && line_idx >= 0)
+			if (line_idx < total_lines)
 				file_sizes[line_idx + 1] = i;
-			i = -1;
-		}
-		if (i == 0)
+			i = 0;
 			line_idx++;
-		i++;
+		}
+		else
+			i++;
+	}
+	if (i > 0)
+	{
+		if (line_idx < total_lines)
+		{
+			file_sizes[line_idx + 1] = i;
+			line_idx++;
+		}
 	}
 	return (file_sizes);
 }

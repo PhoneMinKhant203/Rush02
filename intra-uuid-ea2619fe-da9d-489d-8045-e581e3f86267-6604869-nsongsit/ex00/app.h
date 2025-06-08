@@ -6,7 +6,7 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 07:26:57 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 08:05:03 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:21:10 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ typedef struct s_app_data
 
 extern t_app_data	g_app_data;
 
+void	free_dictionary_data(t_app_data *data);
 char	*ft_get_value(char *key, char **numbers, char **values,
 			t_app_data *data);
 char	*ft_get_mag(char *str);
@@ -59,7 +60,7 @@ int		load_and_parse_dict(const char *dict_path, char ***dfile_content_ptr,
 			t_app_data *data);
 void	print_error(void);
 void	init_char_array(char *arr, int size);
-
+char	*ft_strcpy(char *dest, const char *src);
 int		parse_line_start(int *index, char *str, char **number);
 void	free_parsed_arrays(char **nums, char **values, int current_index);
 int		parse_line_str(char *str, char **number, char **values);

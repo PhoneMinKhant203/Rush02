@@ -6,7 +6,7 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:08:02 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 07:34:17 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 16:24:17 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,14 @@ int	parse_line_str(char *str, char **number, char **values)
 	int	index;
 
 	if (parse_line_start(&index, str, number) != 0)
+	{
+		if (*number != NULL)
+		{
+			free(*number);
+			*number = NULL;
+		}
 		return (1);
+	}
 	*values = malloc(sizeof(char) * (ft_get_val_size(index, str) + 2));
 	if (*values == NULL)
 		return (handle_value_malloc_fail(number));

@@ -6,13 +6,39 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/08 03:36:01 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 07:34:33 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 15:20:41 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "app.h"
 
-extern t_app_data	g_app_data;
+void	free_dictionary_data(t_app_data *data)
+{
+	int	i;
+
+	if (data->nb != NULL)
+	{
+		i = 0;
+		while (data->nb[i] != NULL)
+		{
+			free(data->nb[i]);
+			i++;
+		}
+		free(data->nb);
+		data->nb = NULL;
+	}
+	if (data->val != NULL)
+	{
+		i = 0;
+		while (data->val[i] != NULL)
+		{
+			free(data->val[i]);
+			i++;
+		}
+		free(data->val);
+		data->val = NULL;
+	}
+}
 
 int	allocate_parsed_arrays(char ***nums_ptr, char ***values_ptr, int count)
 {

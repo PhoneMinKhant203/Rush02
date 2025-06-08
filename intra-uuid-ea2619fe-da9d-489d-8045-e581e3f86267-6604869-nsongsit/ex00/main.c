@@ -6,7 +6,7 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 23:38:03 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/08 08:06:37 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 17:41:59 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,11 +79,11 @@ int	main(int argc, char **argv)
 	char	*written_form;
 	char	*to_convert_num;
 	char	*dict_path;
-	int		index;
 
 	written_form = NULL;
 	to_convert_num = NULL;
 	dict_path = NULL;
+
 	to_convert_num = ft_get_num_cvt(argc, argv, &dict_path);
 	if (to_convert_num != NULL)
 		written_form = ft_get_written_form(to_convert_num, dict_path,
@@ -91,12 +91,26 @@ int	main(int argc, char **argv)
 	if (g_app_data.is_error != 0)
 	{
 		print_error();
-		cleanup_written_form (written_form);
-		return (-1);
+		cleanup_written_form(written_form);
+		free_dictionary_data(&g_app_data);
+		return (1);
 	}
-	index = 0;
-	while (written_form[index++])
-		write(1, &written_form[index], 1);
-	cleanup_written_form (written_form);
+	if (written_form != NULL)
+	{
+		write(1, written_form, ft_strlen(written_form));
+		write(1, "\n", 1);
+	}
+	cleanup_written_form(written_form);
+	free_dictionary_data(&g_app_data);
 	return (0);
 }
+/*int x = open(hello.txt, RDONLY)
+
+0 = input
+1 = stdoutput
+2 = stderror
+===
+x = 3
+close(x) //I am going to remove this file away
+and this file, is 3;
+*/
