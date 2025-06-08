@@ -6,16 +6,16 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 02:57:12 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/07 22:22:30 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 07:59:12 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include "ft_helper.h"
+#include "app.h"
 
-extern int	g_is_error;
+extern t_app_data	g_app_data;
 
-char	*ft_get_value(char *key, char **numbers, char **values)
+char	*ft_get_value(char *key, char **numbers, char **values,
+	t_app_data *data)
 {
 	int		index;
 	char	*emp_str;
@@ -27,8 +27,13 @@ char	*ft_get_value(char *key, char **numbers, char **values)
 			return (values[index]);
 		index++;
 	}
-	g_is_error = 1;
+	data->is_error = 1;
 	emp_str = malloc(sizeof(char) * 1);
+	if (emp_str == NULL)
+	{
+		data->is_error = 2;
+		return (NULL);
+	}
 	emp_str[0] = 0;
 	return (emp_str);
 }
@@ -47,6 +52,8 @@ char	*ft_get_mag(char *str)
 			n--;
 	}
 	mag = malloc(n + 1);
+	if (mag == NULL)
+		return (NULL);
 	mag[0] = '1';
 	mag[n] = '\0';
 	while (--n > 0)
@@ -54,45 +61,53 @@ char	*ft_get_mag(char *str)
 	return (mag);
 }
 
-char	*ft_get_mag_nb(char *str)
+char	*handle_long_number(char *str, int len)
 {
 	int		n;
+	char	*num;
 	int		i;
+
+	n = (len - 1) % 3 + 1;
+	num = malloc(n + 1);
+	if (num == NULL)
+		return (NULL);
+	i = 0;
+	while (i < n)
+	{
+		num[i] = str[i];
+		i++;
+	}
+	num[n] = '\0';
+	return (num);
+}
+
+char	*handle_short_number(char *str)
+{
+	int		n;
+	char	*num;
+
+	n = 1;
+	num = malloc(n + 1);
+	if (num == NULL)
+		return (NULL);
+	num[0] = str[0];
+	num[n] = '\0';
+	return (num);
+}
+
+char	*ft_get_mag_nb(char *str)
+{
 	int		len;
 	char	*num;
 
 	len = ft_strlen(str);
 	if (len >= 4)
 	{
-		n = (len - 1) % 3 + 1;
-		num = malloc(n + 1);
-		i = 0;
-		while (i < n)
-		{
-			num[i] = str[i];
-			i ++;
-		}
+		num = handle_long_number(str, len);
 	}
-	if (len <= 3)
+	else
 	{
-		n = 1;
-		num = malloc(n + 1);
-		num[0] = str[0];
+		num = handle_short_number(str);
 	}
-	num[n] = '\0';
 	return (num);
-}
-
-int	only_zero(char *str)
-{
-	int	index;
-
-	index = 0;
-	while (str[index] != 0)
-	{
-		if (str[index] != '0')
-			return (1);
-		index++;
-	}
-	return (0);
 }

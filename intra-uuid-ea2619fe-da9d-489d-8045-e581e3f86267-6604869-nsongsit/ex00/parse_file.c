@@ -6,15 +6,11 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 15:59:19 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/07 22:44:16 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 07:35:22 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <fcntl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include "parse_file_helper.h"
+#include "app.h"
 
 //to return the number of lines in the file path (pathname)
 //otherwise, return -1 if file cannot be opened
@@ -85,7 +81,8 @@ int	ft_get_lines(const	char	*pathname, char ***lines)
 		return (-1);
 	if (ft_get_lines_loop(file, file_size, lines) == -1)
 		return (-1);
-	free(file_size);
+	if (file_size != NULL)
+		free (file_size);
 	close(file);
 	return (0);
 }

@@ -6,12 +6,11 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 11:49:58 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/07 22:35:01 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 07:34:13 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <unistd.h>
+#include "app.h"
 
 // duplicate the substring from s_idx to e_idx
 
@@ -22,6 +21,8 @@ char	*str_dup(char *str, int s_idx, int e_idx)
 
 	result = malloc(sizeof(char) * (e_idx - s_idx + 2));
 	idx = 0;
+	if (result == NULL)
+		return (NULL);
 	while (s_idx <= e_idx)
 	{
 		result[idx] = str[s_idx];

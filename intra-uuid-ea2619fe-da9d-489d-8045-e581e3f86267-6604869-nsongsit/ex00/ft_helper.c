@@ -6,12 +6,11 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 04:36:24 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/07 22:46:47 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 07:33:57 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
+#include "app.h"
 
 int	ft_strlen(char *str)
 {
@@ -45,15 +44,21 @@ char	*ft_strdup(char *src)
 {
 	char	*dup;
 	int		index;
+	int		len;
 
-	dup = malloc(ft_strlen(src) + 1);
+	if (src == NULL)
+		return (NULL);
+	len = ft_strlen(src);
+	dup = malloc(len + 1);
+	if (dup == NULL)
+		return (NULL);
 	index = 0;
-	while (src[index] != 0)
+	while (src[index] != '\0')
 	{
 		dup[index] = src[index];
 		index++;
 	}
-	dup[index] = 0;
+	dup[index] = '\0';
 	return (dup);
 }
 

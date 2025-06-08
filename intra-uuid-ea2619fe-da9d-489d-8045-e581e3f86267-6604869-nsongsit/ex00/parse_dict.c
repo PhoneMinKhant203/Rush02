@@ -6,16 +6,37 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 05:08:02 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/07 22:38:49 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 07:34:17 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
-#include "parse_dict_helper.h"
+#include "app.h"
 
-extern int	g_is_error;
+void	free_parsed_arrays(char **nums, char **values, int current_index)
+{
+	int	i;
+
+	if (nums != NULL)
+	{
+		i = 0;
+		while (i < current_index && nums[i] != NULL)
+		{
+			free (nums[i]);
+			i++;
+		}
+		free (nums);
+	}
+	if (values != NULL)
+	{
+		i = 0;
+		while (i < current_index && values[i] != NULL)
+		{
+			free(values[i]);
+			i++;
+		}
+		free (values);
+	}
+}
 
 int	parse_line_start(int *index, char *str, char **number)
 {
@@ -32,51 +53,45 @@ int	parse_line_start(int *index, char *str, char **number)
 	return (0);
 }
 
+int	handle_value_malloc_fail(char **number_ptr)
+{
+	if (*number_ptr != NULL)
+	{
+		free(*number_ptr);
+		*number_ptr = NULL;
+	}
+	return (1);
+}
+
+void	copy_value_string(char *src_str, int start_idx, char *dest_val)
+{
+	int	value_idx;
+
+	value_idx = 0;
+	while (src_str[start_idx] >= 32 && src_str[start_idx] <= 126)
+	{
+		if (only_space(start_idx, src_str) == 1)
+			break ;
+		if (src_str[start_idx] != ' '
+			|| (src_str[start_idx] == ' ' && src_str[start_idx - 1] != ' '))
+		{
+			dest_val[value_idx] = src_str[start_idx];
+			value_idx++;
+		}
+		start_idx++;
+	}
+	dest_val[value_idx] = '\0';
+}
+
 int	parse_line_str(char *str, char **number, char **values)
 {
 	int	index;
-	int	valueindex;
 
 	if (parse_line_start(&index, str, number) != 0)
 		return (1);
 	*values = malloc(sizeof(char) * (ft_get_val_size(index, str) + 2));
-	valueindex = 0;
-	while (str[index] >= 32 && str[index] <= 126)
-	{
-		if (only_space(index, str) == 1)
-			break ;
-		if (str[index] != ' ' || (str[index] == ' ' && str[index - 1] != ' '))
-		{
-			(*values)[valueindex] = str[index];
-			valueindex++;
-		}
-		index++;
-	}
-	(*values)[valueindex] = 0;
-	return (0);
-}
-
-int	ft_parse_dstring(char **strs, char ***nums, char ***values)
-{
-	int	index;
-
-	index = 0;
-	while (strs[index] != 0)
-		index++;
-	*nums = malloc(sizeof(char *) * (index + 1));
-	*values = malloc(sizeof(char *) * (index + 1));
-	index = 0;
-	while (strs[index] != 0)
-	{
-		if (parse_line_str(strs[index], &(*nums)[index],
-			&(*values)[index]) != 0)
-		{
-			g_is_error = 1;
-			return (1);
-		}
-		index++;
-	}
-	(*nums)[index] = 0;
-	(*values)[index] = 0;
+	if (*values == NULL)
+		return (handle_value_malloc_fail(number));
+	copy_value_string(str, index, *values);
 	return (0);
 }

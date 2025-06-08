@@ -6,13 +6,11 @@
 /*   By: phonekha <phonekha@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/07 17:17:30 by phonekha          #+#    #+#             */
-/*   Updated: 2025/06/07 22:41:44 by phonekha         ###   ########.fr       */
+/*   Updated: 2025/06/08 07:34:45 by phonekha         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <unistd.h>
-#include <stdlib.h>
-#include <fcntl.h>
+#include "app.h"
 
 //to fill the file_size array with the lenght of each line in the file
 // the file_size[0] contains the total number of lines
